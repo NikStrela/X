@@ -11,7 +11,7 @@ class classA {
 
 class classB: classA {
     override class func classFunc() {}
-//    override class func staticFunc() {}             // Ошибка: Cannot override static method
+//    override func staticFunc() {}             // Ошибка: Cannot override static method
 }
 
 /*
@@ -138,6 +138,14 @@ func task5() {
         
         a?.delegate = b
         b?.delegate = a
+        
+//        let tempA = a
+//        let tempB = b
+//        
+//        DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
+//            tempA?.delegate = b
+//            tempB?.delegate = a
+//        }
     }
     
     configure()
@@ -179,3 +187,19 @@ let audi: Car = AUDI()
 
 bmw.drive()
 audi.drive()
+
+/*
+ Task #7 - Гду будет хранится метод протокола реализованный в final классе?
+ */
+
+final class Hyundai: Car {
+    /*static*/ func drive() {
+        print("Hyundai drive")
+    }
+}
+
+let hyundai: Car = Hyundai()
+hyundai.drive()
+
+var count: Int??????? = 3
+print(count)
