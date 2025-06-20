@@ -147,3 +147,35 @@ func task5() {
     print(b?.delegate)
 }
 //task5()
+
+/*
+ Task #6 - Что выведется?
+ */
+
+protocol Car {
+    func drive()
+}
+
+extension Car {
+    func drive() {
+        print("car drive")
+    }
+}
+
+class BMW {
+    func drive() {
+        print("bmw drive")
+    }
+}
+
+class AUDI: Car {
+    func drive() {
+        print("audi drive")
+    }
+}
+
+let bmw = BMW()
+let audi: Car = AUDI()
+
+bmw.drive()
+audi.drive()
