@@ -30,6 +30,8 @@ import Foundation
 //    }
 // }
 
+// Ответ: нет, тк акторы нельзя наследовать -> нельзя переопределять методы
+
 // Task #9 - Решит ли данный сервис проблему Data Race?
 
 // public enum NetworkError: Error {
@@ -73,6 +75,8 @@ import Foundation
 //    }
 // }
 
+// Ответ: тут выяснили, что если внутри актора использовать НЕизолированный код, то одновременно может зайти больше одного потока
+
 // Task #10 - Правильно ли реализован код?
 
 // enum RepairError: Error {
@@ -104,20 +108,20 @@ import Foundation
 
 // Решение
 
-// enum RepairError: Error {
+//enum RepairError: Error {
 //    case notRepair
-// }
+//}
 //
-// protocol Detail: Sendable {}
+//protocol Detail: Sendable {}
 //
-// struct Door: Detail {
+//struct Door: Detail {
 //    let needNew: Bool
 //    let needNewColor: Bool
-// }
+//}
 //
-// final class CustomBuild {
+//final class CustomBuild {
 //    func getWrongDetailCar() async throws -> Detail {
-//        try await withCheckedThrowingContinuation { [weak self] continuation in
+//        try await withCheckedThrowingContinuation{ [weak self] continuation in
 //            self?.contact(detail: { detail in
 //                continuation.resume(returning: detail)
 //            }, fail: { wrongDetail in
@@ -125,12 +129,12 @@ import Foundation
 //            })
 //        }
 //    }
-//
+//    
 //    private func contact(detail: @escaping (Detail) -> Void, fail: @escaping (Error) -> Void) {
 //        fail(RepairError.notRepair)
 //    }
-// }
-//
+//}
+
 
 //Task {
 //    do {
@@ -198,27 +202,32 @@ import Foundation
 
 // 2 вариант задачи
 
-// class  Counter {
-//   private  var value =  0
-//
-//   func increment () async {
-//       value +=  1
+//actor  Counter {
+//    private  var value =  0
+//    
+//    func increment () {
+//        value +=  1
 //    }
+//    
+//    func getValue () -> Int {
+//        return value
+//    }
+//}
 //
-//   func  getValue () -> Int {
-//       return value
-//   }
-// }
+//var counter =  Counter()
+//let semaphore = DispatchSemaphore(value: 1)
 //
-// let counter = Counter()
-// Task {
+//Task {
 //    await withTaskGroup(of: Void.self) { group in
-//        for _ in 1...1000 {
+//        semaphore.signal()
+//        for i in 1...1000 {
 //            group.addTask {
 //                await counter.increment()
 //            }
 //        }
+//        
+//        await group.waitForAll()
+//        print(await counter.getValue())
 //    }
-//    print(await counter.getValue())
-// }
+//}
 
